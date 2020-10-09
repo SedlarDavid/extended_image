@@ -557,7 +557,7 @@ class _CupertinoBackGestureController<T> {
         animateForward = true;
       }
     } else {
-      if (controller.value > 0.5) {
+      if ((controller.value  as double) > 0.5) {
         animateForward = true;
       } else {
         animateForward = false;
@@ -570,7 +570,7 @@ class _CupertinoBackGestureController<T> {
       // to determine it.
       final int droppedPageForwardAnimationTime = min(
         lerpDouble(
-                _kMaxDroppedSwipePageForwardAnimationTime, 0, controller.value)
+                _kMaxDroppedSwipePageForwardAnimationTime, 0, (controller.value as double))
             .floor(),
         _kMaxPageBackAnimationTime,
       );
@@ -585,7 +585,7 @@ class _CupertinoBackGestureController<T> {
       if (controller.isAnimating) {
         // Otherwise, use a custom popping animation duration and curve.
         final int droppedPageBackAnimationTime = lerpDouble(
-                0, _kMaxDroppedSwipePageForwardAnimationTime, controller.value)
+                0, _kMaxDroppedSwipePageForwardAnimationTime, (controller.value as double))
             .floor();
         controller.animateBack(0.0,
             duration: Duration(milliseconds: droppedPageBackAnimationTime),

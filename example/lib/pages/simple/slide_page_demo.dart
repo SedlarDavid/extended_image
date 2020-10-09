@@ -37,7 +37,7 @@ class _SlidePageDemoState extends State<SlidePageDemo> {
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 300,
+            maxCrossAxisExtent: 300.0,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),
