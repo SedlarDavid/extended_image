@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:extended_image/src/editor/extended_image_crop_layer.dart';
 import 'package:extended_image/src/extended_image_typedef.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,8 @@ enum LinePosition {
   upperHorizontal,
   bottomHorizontal
 }
+
+enum CropLayoutFraction { horizontal, vertical }
 
 class EditActionDetails {
   double _rotateRadian = 0.0;
@@ -374,7 +375,8 @@ class EditorConfig {
       this.cropAspectRatio = CropAspectRatios.custom,
       this.initCropRectType = InitCropRectType.imageRect,
       this.cornerPainter,
-      this.lines = const <LinePosition>{}})
+      this.lines = const <LinePosition>{},
+      this.cropFractions = const <CropLayoutFraction, double>{}})
       : maxScale = maxScale ??= 5.0,
         // initialScale = initialScale ??= 1.0,
         // assert(minScale <= maxScale),
@@ -438,6 +440,9 @@ class EditorConfig {
 
   /// Set of [LinePosition] used to determine which lines should be painted when [pointerDown]
   final Set<LinePosition> lines;
+
+  /// Map that holds information on how to fractionally split crop rectangle
+  final Map<CropLayoutFraction, double> cropFractions;
 }
 
 class CropAspectRatios {

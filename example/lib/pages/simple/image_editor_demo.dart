@@ -45,6 +45,7 @@ class _SimpleImageEditorState extends State<SimpleImageEditor> {
           return EditorConfig(
             maxScale: 8.0,
             initCropRectType: InitCropRectType.layoutRect,
+            cropFractions: {CropLayoutFraction.vertical: 4.0},
             cropRectPadding: const EdgeInsets.all(20.0),
             hitTestSize: 20.0,
             cornerPainter: ExtendedImageCropLayerPainterCircleCorner(
