@@ -137,7 +137,8 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
           maskColor: maskColor,
           pointerDown: _pointerDown,
           lines: editConfig.lines,
-          cropFractions: editConfig.cropFractions),
+          cropFractions: editConfig.cropFractions,
+          showLinesAlways: editConfig.showLinesAlways),
       child: Stack(
         children: <Widget>[
           //top left
@@ -592,7 +593,8 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
       @required
           this.lines,
       @required
-          this.cropFractions});
+          this.cropFractions,
+      this.showLinesAlways = false});
 
   final Rect cropRect;
 
@@ -618,6 +620,8 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
   final Set<LinePosition> lines;
 
   final Map<CropLayoutFraction, double> cropFractions;
+
+  final bool showLinesAlways;
 
   //Corner painter
   final ExtendedImageCropLayerCornerPainter cornerPainter;
@@ -675,7 +679,7 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
     final double verticalFraction =
         cropFractions[CropLayoutFraction.vertical] ?? 3.0;
 
-    if (pointerDown) {
+    if (pointerDown || showLinesAlways) {
       // First vertical
       if (lines.contains(LinePosition.leftVertical) || lines.isEmpty) {
         canvas.drawLine(

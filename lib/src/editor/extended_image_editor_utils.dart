@@ -381,7 +381,7 @@ class EditorConfig {
     this.lines = const <LinePosition>{}, this.cropFractions = const <
         CropLayoutFraction,
         double>{},
-    this.hitTestBehavior = HitTestBehavior.deferToChild,
+    this.hitTestBehavior = HitTestBehavior.deferToChild, this.showLinesAlways = false
   })
       : maxScale = maxScale ??= 5.0,
         speed = speed ?? 1.0,
@@ -456,6 +456,9 @@ class EditorConfig {
 
   /// Map that holds information on how to fractionally split crop rectangle
   final Map<CropLayoutFraction, double> cropFractions;
+
+  /// Whether to render crop lines always
+  final bool showLinesAlways;
 }
 
 class CropAspectRatios {
