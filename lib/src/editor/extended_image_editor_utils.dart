@@ -1,9 +1,18 @@
 import 'dart:math';
+
+import 'package:extended_image/src/editor/extended_image_crop_layer.dart';
 import 'package:extended_image/src/extended_image_typedef.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../extended_image_utils.dart';
+
+enum LinePosition {
+  leftVertical,
+  rightVertical,
+  upperHorizontal,
+  bottomHorizontal
+}
 
 class EditActionDetails {
   double _rotateRadian = 0.0;
@@ -31,6 +40,7 @@ class EditActionDetails {
 
   ///  aspect ratio of crop rect
   double _cropAspectRatio;
+
   double get cropAspectRatio {
     if (_cropAspectRatio != null) {
       return isHalfPi ? 1.0 / _cropAspectRatio : _cropAspectRatio;
@@ -345,26 +355,27 @@ class EditActionDetails {
 }
 
 class EditorConfig {
-  EditorConfig({
-    double maxScale,
-    //double initialScale,
-    this.cropRectPadding = const EdgeInsets.all(20.0),
-    @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
-        // ignore: deprecated_member_use_from_same_package
-        this.cornerSize = const Size(30.0, 5.0),
-    @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
-        // ignore: deprecated_member_use_from_same_package
-        this.cornerColor,
-    this.lineColor,
-    this.lineHeight = 0.6,
-    this.editorMaskColorHandler,
-    this.hitTestSize = 20.0,
-    this.animationDuration = const Duration(milliseconds: 200),
-    this.tickerDuration = const Duration(milliseconds: 400),
-    this.cropAspectRatio = CropAspectRatios.custom,
-    this.initCropRectType = InitCropRectType.imageRect,
-    this.cornerPainter,
-  })  : maxScale = maxScale ??= 5.0,
+  EditorConfig(
+      {double maxScale,
+      //double initialScale,
+      this.cropRectPadding = const EdgeInsets.all(20.0),
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerSize = const Size(30.0, 5.0),
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerColor,
+      this.lineColor,
+      this.lineHeight = 0.6,
+      this.editorMaskColorHandler,
+      this.hitTestSize = 20.0,
+      this.animationDuration = const Duration(milliseconds: 200),
+      this.tickerDuration = const Duration(milliseconds: 400),
+      this.cropAspectRatio = CropAspectRatios.custom,
+      this.initCropRectType = InitCropRectType.imageRect,
+      this.cornerPainter,
+      this.lines = const <LinePosition>{}})
+      : maxScale = maxScale ??= 5.0,
         // initialScale = initialScale ??= 1.0,
         // assert(minScale <= maxScale),
         // assert(minScale <= initialScale && initialScale <= maxScale),
@@ -424,6 +435,9 @@ class EditorConfig {
   /// or extend class [ExtendedImageCropLayerCornerPainter]
   /// and create your own corner painter.
   final ExtendedImageCropLayerCornerPainter cornerPainter;
+
+  /// Set of [LinePosition] used to determine which lines should be painted when [pointerDown]
+  final Set<LinePosition> lines;
 }
 
 class CropAspectRatios {
