@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +37,7 @@ class ExtendedImageCropLayer extends StatefulWidget {
   final Rect layoutRect;
   final BoxFit fit;
   final ExtendedImageCropLayerCornerPainter cornerPainter;
+
   @override
   ExtendedImageCropLayerState createState() => ExtendedImageCropLayerState();
 }
@@ -45,9 +47,11 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
   Rect get layoutRect => widget.layoutRect;
 
   Rect get cropRect => widget.editActionDetails.cropRect;
+
   set cropRect(Rect value) => widget.editActionDetails.cropRect = value;
 
   bool get isAnimating => _rectTweenController?.isAnimating ?? false;
+
   bool get isMoving => _currentMoveType != null;
 
   Timer _timer;
@@ -56,6 +60,7 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
   Animation<Rect> _rectAnimation;
   AnimationController _rectTweenController;
   _moveType _currentMoveType;
+
   @override
   void initState() {
     _pointerDown = false;
@@ -130,7 +135,8 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
               Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
           lineHeight: editConfig.lineHeight,
           maskColor: maskColor,
-          pointerDown: _pointerDown),
+          pointerDown: _pointerDown,
+          lines: editConfig.lines),
       child: Stack(
         children: <Widget>[
           //top left
@@ -568,23 +574,25 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
 }
 
 class ExtendedImageCropLayerPainter extends CustomPainter {
-  ExtendedImageCropLayerPainter({
-    @required
-        this.cropRect,
-    this.lineColor,
-    @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
-        // ignore: deprecated_member_use_from_same_package
-        this.cornerColor,
-    @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
-        // ignore: deprecated_member_use_from_same_package
-        this.cornerSize,
-    this.lineHeight,
-    this.maskColor,
-    this.pointerDown,
-    this.cornerPainter,
-  });
+  ExtendedImageCropLayerPainter(
+      {@required
+          this.cropRect,
+      this.lineColor,
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerColor,
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerSize,
+      this.lineHeight,
+      this.maskColor,
+      this.pointerDown,
+      this.cornerPainter,
+      @required
+          this.lines});
 
   final Rect cropRect;
+
   //size of corner shape
   final Size cornerSize;
 
@@ -603,6 +611,8 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
 
   //whether pointer is down
   final bool pointerDown;
+
+  final Set<LinePosition> lines;
 
   //Corner painter
   final ExtendedImageCropLayerCornerPainter cornerPainter;
@@ -656,39 +666,51 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
     canvas.drawRect(cropRect, linePainter);
 
     if (pointerDown) {
-      canvas.drawLine(
-          Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
-              cropRect.top),
-          Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
-              cropRect.bottom),
-          linePainter);
+      // First vertical
+      if (lines.contains(LinePosition.leftVertical) || lines.isEmpty) {
+        canvas.drawLine(
+            Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
+                cropRect.top),
+            Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
+                cropRect.bottom),
+            linePainter);
+      }
 
-      canvas.drawLine(
-          Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
-              cropRect.top),
-          Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
-              cropRect.bottom),
-          linePainter);
+      // Second vertical
+      if (lines.contains(LinePosition.rightVertical) || lines.isEmpty) {
+        canvas.drawLine(
+            Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
+                cropRect.top),
+            Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
+                cropRect.bottom),
+            linePainter);
+      }
 
-      canvas.drawLine(
-          Offset(
-            cropRect.left,
-            (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
-          ),
-          Offset(
-            cropRect.right,
-            (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
-          ),
-          linePainter);
+      // Upper horizontal
+      if (lines.contains(LinePosition.upperHorizontal) || lines.isEmpty) {
+        canvas.drawLine(
+            Offset(
+              cropRect.left,
+              (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
+            ),
+            Offset(
+              cropRect.right,
+              (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
+            ),
+            linePainter);
+      }
 
-      canvas.drawLine(
-          Offset(cropRect.left,
-              (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top),
-          Offset(
-            cropRect.right,
-            (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top,
-          ),
-          linePainter);
+      // Bottom horizontal
+      if (lines.contains(LinePosition.bottomHorizontal) || lines.isEmpty) {
+        canvas.drawLine(
+            Offset(cropRect.left,
+                (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top),
+            Offset(
+              cropRect.right,
+              (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top,
+            ),
+            linePainter);
+      }
     }
 
     final Paint defaultCornerPainter = Paint()
@@ -712,6 +734,7 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
         maskColor != delegate.maskColor ||
         cornerPainter != delegate.cornerPainter ||
         cornerColor != delegate.cornerColor ||
-        pointerDown != delegate.pointerDown;
+        pointerDown != delegate.pointerDown ||
+        lines != delegate.lines;
   }
 }

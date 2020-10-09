@@ -1,9 +1,18 @@
 import 'dart:math';
+
+import 'package:extended_image/src/editor/extended_image_crop_layer.dart';
 import 'package:extended_image/src/extended_image_typedef.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../extended_image_utils.dart';
+
+enum LinePosition {
+  leftVertical,
+  rightVertical,
+  upperHorizontal,
+  bottomHorizontal
+}
 
 class EditActionDetails {
   double _rotateRadian = 0.0;
@@ -31,6 +40,7 @@ class EditActionDetails {
 
   ///  aspect ratio of crop rect
   double _cropAspectRatio;
+
   double get cropAspectRatio {
     if (_cropAspectRatio != null) {
       return isHalfPi ? 1.0 / _cropAspectRatio : _cropAspectRatio;
@@ -365,6 +375,7 @@ class EditorConfig {
     this.initCropRectType = InitCropRectType.imageRect,
     this.cornerPainter,
     double speed,
+    this.lines = const <LinePosition>{}
     this.hitTestBehavior = HitTestBehavior.deferToChild,
   })  : maxScale = maxScale ??= 5.0,
         speed = speed ?? 1.0,
@@ -433,6 +444,9 @@ class EditorConfig {
 
   //speed for zoom/pan
   final double speed;
+
+  /// Set of [LinePosition] used to determine which lines should be painted when [pointerDown]
+  final Set<LinePosition> lines;
 }
 
 class CropAspectRatios {

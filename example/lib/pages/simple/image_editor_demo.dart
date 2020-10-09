@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:example/common/image_picker/image_picker.dart';
 import 'package:example/common/utils/crop_editor_helper.dart';
+import 'package:extended_image/extended_image.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:oktoast/oktoast.dart';
 
 @FFRoute(
@@ -26,6 +26,7 @@ class _SimpleImageEditorState extends State<SimpleImageEditor> {
   final GlobalKey<ExtendedImageEditorState> editorKey =
       GlobalKey<ExtendedImageEditorState>();
   bool _cropping = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +36,20 @@ class _SimpleImageEditorState extends State<SimpleImageEditor> {
       body: ExtendedImage.asset(
         'assets/image.jpg',
         fit: BoxFit.contain,
+        enableMemoryCache: false,
+        clearMemoryCacheWhenDispose: true,
         mode: ExtendedImageMode.editor,
-        enableLoadState: true,
         extendedImageEditorKey: editorKey,
-        initEditorConfigHandler: (ExtendedImageState state) {
+        shape: BoxShape.rectangle,
+        initEditorConfigHandler: (state) {
           return EditorConfig(
             maxScale: 8.0,
+            initCropRectType: InitCropRectType.layoutRect,
             cropRectPadding: const EdgeInsets.all(20.0),
             hitTestSize: 20.0,
-            initCropRectType: InitCropRectType.imageRect,
-            cropAspectRatio: CropAspectRatios.ratio4_3,
+            cornerPainter: ExtendedImageCropLayerPainterCircleCorner(
+                color: Colors.transparent),
+            cropAspectRatio: CropAspectRatios.ratio1_1,
           );
         },
       ),

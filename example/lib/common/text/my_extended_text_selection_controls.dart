@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:extended_text_library/extended_text_library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -20,6 +21,7 @@ const double _kToolbarContentDistance = 8.0;
 class MyExtendedMaterialTextSelectionControls
     extends ExtendedMaterialTextSelectionControls {
   MyExtendedMaterialTextSelectionControls();
+
   @override
   Widget buildToolbar(
     BuildContext context,
@@ -83,7 +85,7 @@ class MyExtendedMaterialTextSelectionControls
               //clear selecction
               delegate.textEditingValue = delegate.textEditingValue.copyWith(
                   selection: TextSelection.collapsed(
-                      offset: delegate.textEditingValue.selection.end));
+                      offset: delegate.textEditingValue.selection.end ?? 1));
             },
           ),
         ),
