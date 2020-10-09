@@ -376,7 +376,8 @@ class EditorConfig {
       this.initCropRectType = InitCropRectType.imageRect,
       this.cornerPainter,
       this.lines = const <LinePosition>{},
-      this.cropFractions = const <CropLayoutFraction, double>{}})
+      this.cropFractions = const <CropLayoutFraction, double>{},
+      this.showLinesAlways = false})
       : maxScale = maxScale ??= 5.0,
         // initialScale = initialScale ??= 1.0,
         // assert(minScale <= maxScale),
@@ -443,6 +444,9 @@ class EditorConfig {
 
   /// Map that holds information on how to fractionally split crop rectangle
   final Map<CropLayoutFraction, double> cropFractions;
+
+  /// Whether to render crop lines always
+  final bool showLinesAlways;
 }
 
 class CropAspectRatios {
