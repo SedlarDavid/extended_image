@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'dart:ui' as ui show Image;
+
 import 'package:extended_image/src/editor/extended_image_editor_utils.dart';
-import 'package:extended_image/src/gesture/extended_image_gesture_utils.dart';
 import 'package:extended_image/src/extended_image_typedef.dart';
+import 'package:extended_image/src/gesture/extended_image_gesture_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:meta/meta.dart';
@@ -63,7 +64,9 @@ class ExtendedRenderImage extends RenderBox {
   }
 
   EditActionDetails _editActionDetails;
+
   EditActionDetails get editActionDetails => _editActionDetails;
+
   set editActionDetails(EditActionDetails value) {
     if (value == _editActionDetails) {
       return;
@@ -73,7 +76,9 @@ class ExtendedRenderImage extends RenderBox {
   }
 
   GestureDetails _gestureDetails;
+
   GestureDetails get gestureDetails => _gestureDetails;
+
   set gestureDetails(GestureDetails value) {
     if (value == _gestureDetails) {
       return;
@@ -84,7 +89,9 @@ class ExtendedRenderImage extends RenderBox {
 
   ///you can paint anything if you want before paint image.
   BeforePaintImage _beforePaintImage;
+
   BeforePaintImage get beforePaintImage => _beforePaintImage;
+
   set beforePaintImage(BeforePaintImage value) {
     if (value == _beforePaintImage) {
       return;
@@ -95,7 +102,9 @@ class ExtendedRenderImage extends RenderBox {
 
   ///you can paint anything if you want after paint image.
   AfterPaintImage _afterPaintImage;
+
   AfterPaintImage get afterPaintImage => _afterPaintImage;
+
   set afterPaintImage(AfterPaintImage value) {
     if (value == _afterPaintImage) {
       return;
@@ -106,7 +115,9 @@ class ExtendedRenderImage extends RenderBox {
 
   ///input rect, you can use this to crop image.
   Rect _sourceRect;
+
   Rect get sourceRect => _sourceRect;
+
   set sourceRect(Rect value) {
     if (value == _sourceRect) {
       return;
@@ -136,6 +147,7 @@ class ExtendedRenderImage extends RenderBox {
   /// The image to display.
   ui.Image get image => _image;
   ui.Image _image;
+
   set image(ui.Image value) {
     if (value == _image) {
       return;
@@ -153,6 +165,7 @@ class ExtendedRenderImage extends RenderBox {
   /// aspect ratio.
   double get width => _width;
   double _width;
+
   set width(double value) {
     if (value == _width) {
       return;
@@ -167,6 +180,7 @@ class ExtendedRenderImage extends RenderBox {
   /// aspect ratio.
   double get height => _height;
   double _height;
+
   set height(double value) {
     if (value == _height) {
       return;
@@ -180,6 +194,7 @@ class ExtendedRenderImage extends RenderBox {
   /// Used when determining the best display size for the image.
   double get scale => _scale;
   double _scale;
+
   set scale(double value) {
     assert(value != null);
     if (value == _scale) {
@@ -203,6 +218,7 @@ class ExtendedRenderImage extends RenderBox {
   /// If non-null, this color is blended with each image pixel using [colorBlendMode].
   Color get color => _color;
   Color _color;
+
   set color(Color value) {
     if (value == _color) {
       return;
@@ -218,6 +234,7 @@ class ExtendedRenderImage extends RenderBox {
   /// to nearest-neighbor.
   FilterQuality get filterQuality => _filterQuality;
   FilterQuality _filterQuality;
+
   set filterQuality(FilterQuality value) {
     assert(value != null);
     if (value == _filterQuality) {
@@ -237,6 +254,7 @@ class ExtendedRenderImage extends RenderBox {
   ///  * [BlendMode], which includes an illustration of the effect of each blend mode.
   BlendMode get colorBlendMode => _colorBlendMode;
   BlendMode _colorBlendMode;
+
   set colorBlendMode(BlendMode value) {
     if (value == _colorBlendMode) {
       return;
@@ -252,6 +270,7 @@ class ExtendedRenderImage extends RenderBox {
   /// [paintImage].
   BoxFit get fit => _fit;
   BoxFit _fit;
+
   set fit(BoxFit value) {
     if (value == _fit) {
       return;
@@ -266,6 +285,7 @@ class ExtendedRenderImage extends RenderBox {
   /// not be null.
   AlignmentGeometry get alignment => _alignment;
   AlignmentGeometry _alignment;
+
   set alignment(AlignmentGeometry value) {
     assert(value != null);
     if (value == _alignment) {
@@ -278,6 +298,7 @@ class ExtendedRenderImage extends RenderBox {
   /// How to repeat this image if it doesn't fill its layout bounds.
   ImageRepeat get repeat => _repeat;
   ImageRepeat _repeat;
+
   set repeat(ImageRepeat value) {
     assert(value != null);
     if (value == _repeat) {
@@ -296,6 +317,7 @@ class ExtendedRenderImage extends RenderBox {
   /// the center slice will be stretched only vertically.
   Rect get centerSlice => _centerSlice;
   Rect _centerSlice;
+
   set centerSlice(Rect value) {
     if (value == _centerSlice) {
       return;
@@ -311,6 +333,7 @@ class ExtendedRenderImage extends RenderBox {
   /// after it. This is primarily used for implementing smart invert on iOS.
   bool get invertColors => _invertColors;
   bool _invertColors;
+
   set invertColors(bool value) {
     if (value == _invertColors) {
       return;
@@ -335,6 +358,7 @@ class ExtendedRenderImage extends RenderBox {
   /// If this is set to true, [textDirection] must not be null.
   bool get matchTextDirection => _matchTextDirection;
   bool _matchTextDirection;
+
   set matchTextDirection(bool value) {
     assert(value != null);
     if (value == _matchTextDirection) {
@@ -351,6 +375,7 @@ class ExtendedRenderImage extends RenderBox {
   /// depend on the direction.
   TextDirection get textDirection => _textDirection;
   TextDirection _textDirection;
+
   set textDirection(TextDirection value) {
     if (_textDirection == value) {
       return;
@@ -364,6 +389,7 @@ class ExtendedRenderImage extends RenderBox {
   /// Anti-aliasing alleviates the sawtooth artifact when the image is rotated.
   bool get isAntiAlias => _isAntiAlias;
   bool _isAntiAlias;
+
   set isAntiAlias(bool value) {
     if (_isAntiAlias == value) {
       return;
@@ -487,8 +513,9 @@ class ExtendedRenderImage extends RenderBox {
         defaultValue: ImageRepeat.noRepeat));
     properties.add(DiagnosticsProperty<Rect>('centerSlice', centerSlice,
         defaultValue: null));
-    properties.add(FlagProperty('matchTextDirection',
-        value: matchTextDirection, ifTrue: 'match text direction'));
+    properties.add(FlagProperty(
+      'matchTextDirection',
+    ));
     properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
         defaultValue: null));
     properties.add(DiagnosticsProperty<bool>('invertColors', invertColors));

@@ -255,8 +255,7 @@ class ExtendedRawImage extends LeafRenderObjectWidget {
         defaultValue: ImageRepeat.noRepeat));
     properties.add(DiagnosticsProperty<Rect>('centerSlice', centerSlice,
         defaultValue: null));
-    properties.add(FlagProperty('matchTextDirection',
-        value: matchTextDirection, ifTrue: 'match text direction'));
+    properties.add(FlagProperty('matchTextDirection',));
     properties.add(DiagnosticsProperty<bool>('invertColors', invertColors));
     properties.add(EnumProperty<FilterQuality>('filterQuality', filterQuality));
   }
