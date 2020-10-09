@@ -136,7 +136,8 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
           lineHeight: editConfig.lineHeight,
           maskColor: maskColor,
           pointerDown: _pointerDown,
-          lines: editConfig.lines),
+          lines: editConfig.lines,
+          cropFractions: editConfig.cropFractions),
       child: Stack(
         children: <Widget>[
           //top left
@@ -589,7 +590,9 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
       this.pointerDown,
       this.cornerPainter,
       @required
-          this.lines});
+          this.lines,
+      @required
+          this.cropFractions});
 
   final Rect cropRect;
 
@@ -613,6 +616,8 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
   final bool pointerDown;
 
   final Set<LinePosition> lines;
+
+  final Map<CropLayoutFraction, double> cropFractions;
 
   //Corner painter
   final ExtendedImageCropLayerCornerPainter cornerPainter;
@@ -665,13 +670,22 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
 
     canvas.drawRect(cropRect, linePainter);
 
+    final double horizontalFraction =
+        cropFractions[CropLayoutFraction.horizontal] ?? 3.0;
+    final double verticalFraction =
+        cropFractions[CropLayoutFraction.vertical] ?? 3.0;
+
     if (pointerDown) {
       // First vertical
       if (lines.contains(LinePosition.leftVertical) || lines.isEmpty) {
         canvas.drawLine(
-            Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
+            Offset(
+                (cropRect.right - cropRect.left) / verticalFraction +
+                    cropRect.left,
                 cropRect.top),
-            Offset((cropRect.right - cropRect.left) / 3.0 + cropRect.left,
+            Offset(
+                (cropRect.right - cropRect.left) / verticalFraction +
+                    cropRect.left,
                 cropRect.bottom),
             linePainter);
       }
@@ -679,9 +693,17 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
       // Second vertical
       if (lines.contains(LinePosition.rightVertical) || lines.isEmpty) {
         canvas.drawLine(
-            Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
+            Offset(
+                (cropRect.right - cropRect.left) /
+                        verticalFraction *
+                        (verticalFraction - 1) +
+                    cropRect.left,
                 cropRect.top),
-            Offset((cropRect.right - cropRect.left) / 3.0 * 2.0 + cropRect.left,
+            Offset(
+                (cropRect.right - cropRect.left) /
+                        verticalFraction *
+                        (verticalFraction - 1) +
+                    cropRect.left,
                 cropRect.bottom),
             linePainter);
       }
@@ -691,11 +713,13 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
         canvas.drawLine(
             Offset(
               cropRect.left,
-              (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
+              (cropRect.bottom - cropRect.top) / horizontalFraction +
+                  cropRect.top,
             ),
             Offset(
               cropRect.right,
-              (cropRect.bottom - cropRect.top) / 3.0 + cropRect.top,
+              (cropRect.bottom - cropRect.top) / horizontalFraction +
+                  cropRect.top,
             ),
             linePainter);
       }
@@ -703,11 +727,18 @@ class ExtendedImageCropLayerPainter extends CustomPainter {
       // Bottom horizontal
       if (lines.contains(LinePosition.bottomHorizontal) || lines.isEmpty) {
         canvas.drawLine(
-            Offset(cropRect.left,
-                (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top),
+            Offset(
+                cropRect.left,
+                (cropRect.bottom - cropRect.top) /
+                        horizontalFraction *
+                        (horizontalFraction - 1) +
+                    cropRect.top),
             Offset(
               cropRect.right,
-              (cropRect.bottom - cropRect.top) / 3.0 * 2.0 + cropRect.top,
+              (cropRect.bottom - cropRect.top) /
+                      horizontalFraction *
+                      (horizontalFraction - 1) +
+                  cropRect.top,
             ),
             linePainter);
       }
