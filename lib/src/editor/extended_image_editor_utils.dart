@@ -388,6 +388,32 @@ class EditorConfig {
   // initialScale = initialScale ??= 1.0,
   // assert(minScale <= maxScale),
   // assert(minScale <= initialScale && initialScale <= maxScale),
+  EditorConfig(
+      {double maxScale,
+      //double initialScale,
+      this.cropRectPadding = const EdgeInsets.all(20.0),
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerSize = const Size(30.0, 5.0),
+      @Deprecated('Use cornerPainter instead. The feature was deprecated after v1.1.2.')
+          // ignore: deprecated_member_use_from_same_package
+          this.cornerColor,
+      this.lineColor,
+      this.lineHeight = 0.6,
+      this.editorMaskColorHandler,
+      this.hitTestSize = 20.0,
+      this.animationDuration = const Duration(milliseconds: 200),
+      this.tickerDuration = const Duration(milliseconds: 400),
+      this.cropAspectRatio = CropAspectRatios.custom,
+      this.initCropRectType = InitCropRectType.imageRect,
+      this.cornerPainter,
+      this.lines = const <LinePosition>{},
+      this.cropFractions = const <CropLayoutFraction, double>{},
+      this.showLinesAlways = false})
+      : maxScale = maxScale ??= 5.0,
+        // initialScale = initialScale ??= 1.0,
+        // assert(minScale <= maxScale),
+        // assert(minScale <= initialScale && initialScale <= maxScale),
         assert(lineHeight > 0.0),
         assert(hitTestSize >= 0.0),
         assert(animationDuration != null),
